@@ -27,7 +27,7 @@ class MonetizationModuleHelper extends WikiaModel {
 
 	const FONT_COLOR_DARK_THEME = '#d5d4d4';
 	const FONT_COLOR_LIGHT_THEME = '#3a3a3a';
-	const THEME_SETTINGS_KEYWORD = '$theme';
+	const THEME_SETTINGS_KEYWORD = '$set';
 
 	protected static $mapThemeSettings = [
 		'data-color-bg'     => 'color-page',
@@ -163,6 +163,8 @@ class MonetizationModuleHelper extends WikiaModel {
 		$found = strpos( $adUnits, self::THEME_SETTINGS_KEYWORD );
 		$adUnits = json_decode( $adUnits, true );
 		if ( $found !== false && is_array( $adUnits ) ) {
+			$adUnits = str_replace( '$setSiteName', $this->wg->Sitename, $adUnits );
+
 			$theme = SassUtil::getOasisSettings();
 			if ( SassUtil::isThemeDark() ) {
 				$theme['color'] = self::FONT_COLOR_DARK_THEME;
@@ -178,7 +180,7 @@ class MonetizationModuleHelper extends WikiaModel {
 			}
 
 			foreach ( $adUnits as &$unit ) {
-				$unit = str_replace( '$theme', $adSettings, $unit );
+				$unit = str_replace( '$setTheme', $adSettings, $unit );
 			}
 
 			// set cache
