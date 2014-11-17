@@ -5,6 +5,66 @@
 @import 'skins/shared/mixins/gradient';
 
 .monetization-module {
+	clear: left;
+
+	.ad-header {
+		color: $color-alternate-text;
+		font-size: 10px;
+		font-weight: normal;
+		margin-bottom: 6px;
+		padding-left: 10px;
+		text-align: left;
+		text-transform: uppercase;
+	}
+
+	.ad-responsive {
+		height: 90px;
+		width: 728px;
+	}
+
+	.ad-responsive-ic {
+		height: 90px;
+		width: 468px;
+	}
+
+	@media(min-width: 1024px) {
+		.ad-responsive-ic {
+			height: 100px;
+			width: 320px;
+		}
+
+		.ad-responsive {
+			height: 90px;
+			width: 690px;
+		}
+	}
+
+	@media(min-width: 1440px) {
+		.ad-responsive-ic {
+			height: 90px;
+			width: 468px;
+		}
+
+		.ad-responsive {
+			height: 90px;
+			width: 728px;
+		}
+	}
+
+	@media(min-width: 1665px) {
+		.ad-responsive-ic {
+			height: 90px;
+			width: 690px;
+		}
+	}
+
+	@media(min-width: 1700px) {
+		.ad-responsive-ic {
+			height: 90px;
+			width: 728px;
+		}
+	}
+
 	.affiliate-wrapper {
 		height: 285px;
 		overflow: hidden;
@@ -104,9 +164,9 @@
 		padding: 10px;
 	}
 
-	div[data-mon-type=adunit] {
-		margin-bottom: 10px;
-		margin-top: 10px;
+	[data-mon-type=adunit] {
+		margin-bottom: 50px;
+		margin-top: 24px;
 	}
 }
 
