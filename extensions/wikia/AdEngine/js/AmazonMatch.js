@@ -5,26 +5,26 @@ define('ext.wikia.adEngine.amazonMatch', [
 	'wikia.document',
 	'wikia.log',
 	'wikia.window'
-], function (adTracker, doc, log, w) {
+], function (adTracker, doc, log, win) {
 	'use strict';
 
 	var logGroup = 'ext.wikia.adEngine.amazonMatch',
-		amazonId = '3006',
-		amazonTargs,
+		amazonId = '3115',
+		amazonResponse,
 		amazonTiming,
 		amazonCalled = false;
 
 	function trackState(trackEnd) {
-		log(['trackState', amazonTargs], 'debug', logGroup);
+		log(['trackState', amazonResponse], 'debug', logGroup);
 
 		var eventName,
 			i, j,
 			data,
 			matches;
 
-		if (amazonTargs) {
+		if (amazonResponse) {
 			eventName = 'lookupSuccess';
-			matches = amazonTargs.replace('amzn_', '').match(/[\dx]+_tier\d/g);
+			matches = amazonResponse.replace('amzn_', '').match(/[\dx]+_tier\d/g);
 			if (matches) {
 				data = {};
 
@@ -48,7 +48,11 @@ define('ext.wikia.adEngine.amazonMatch', [
 	function onAmazonResponse(response) {
 		amazonTiming.measureDiff({}, 'end').track();
 		log(['onAmazonResponse', response], 'debug', logGroup);
-		amazonTargs = w.amzn_targs;
+
+		if (response.status === 'ok') {
+			amazonResponse = response.ads;
+		}
+
 		trackState(true);
 	}
 
@@ -59,14 +63,15 @@ define('ext.wikia.adEngine.amazonMatch', [
 		amazonTiming = adTracker.measureTime('amazon', {}, 'start');
 		amazonTiming.track();
 
+		win.amznads = { updateAds: onAmazonResponse };
+
 		var url = encodeURIComponent(doc.location),
 			s = doc.createElement('script');
 
-		try { url = encodeURIComponent(w.top.location.href); } catch(e) {}
+		try { url = encodeURIComponent(win.top.location.href); } catch(e) {}
 
 		s.id = logGroup;
 		s.async = true;
-		s.onload = onAmazonResponse;
 		s.src = '//aax.amazon-adsystem.com/e/dtb/bid?src=' + amazonId + '&u=' + url + "&cb=" + Math.round(Math.random()*10000000);
 		doc.body.appendChild(s);
 
