@@ -148,7 +148,6 @@ class VideosModule extends WikiaModel {
 	 * @return array - Premium videos related to the local wiki.
 	 */
 	public function getWikiRelatedVideosTopics( $numRequired ) {
-		wfProfileIn( __METHOD__ );
 		$log = WikiaLogger::instance();
 
 		$memcKey = wfMemcKey( 'videomodule', 'wiki_related_videos_topics', self::CACHE_VERSION, $this->userRegion );
@@ -187,8 +186,6 @@ class VideosModule extends WikiaModel {
 		} else {
 			$log->info( __METHOD__.' memc HIT', $loggingParams );
 		}
-
-		wfProfileOut( __METHOD__ );
 
 		return $videos;
 	}
