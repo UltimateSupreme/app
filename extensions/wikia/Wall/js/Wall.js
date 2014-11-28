@@ -718,7 +718,7 @@
 			$.when($editorPromise, $quotePromise).done(function () {
 				var data = arguments[1];
 				if (data.status === 'success') {
-					replyForm.setContent(reply, data.markup);
+					replyForm.setContent(reply, replyForm.getMessageBody(reply) + data.markup);
 				}
 			});
 
